@@ -68,6 +68,6 @@ BRASIL. Ministério da Educação. Secretaria de Modalidades Especializadas de E
 
 ## Créditos
 
-Grupo: _(nomes dos integrantes)_
+Grupo: _(Gabriela Negri, Maria Isabel Brito, Sofia Dias)_
 
 Desenvolvido com auxílio do Claude (Anthropic).
