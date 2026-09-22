@@ -1,0 +1,9 @@
+{
+  "name": "ponto-a-ponto",
+  "version": "1.0.0",
+  "description": "Tradutor de Braille em português (Grafia Braille MEC/IBC)",
+  "scripts": {
+    "test": "node tests.js"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ponto a Ponto — tradutor de Braille</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⠃</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>Ponto a Ponto
+    <span class="sub">Tradutor de Braille em português para quem não sabe ler Braille: escreva em texto e veja as celas, ou monte as celas ponto a ponto e leia o texto.</span>
+  </h1>
+  <button class="theme-btn" id="themeBtn" type="button">Modo escuro</button>
+</header>
+
+<nav class="sections" role="tablist" aria-label="Áreas">
+  <button role="tab" id="sec-tr" aria-controls="s-tr" aria-selected="true">Tradutor</button>
+  <button role="tab" id="sec-mv" aria-controls="s-mv" aria-selected="false" tabindex="-1">Método e Validação</button>
+</nav>
+
+<!-- ===== TRADUTOR ===== -->
+<div id="s-tr" role="tabpanel" aria-labelledby="sec-tr">
+  <nav class="tabs" role="tablist" aria-label="Tradutor">
+    <button role="tab" id="tab-enc" aria-controls="p-enc" aria-selected="true">Texto → Braille</button>
+    <button role="tab" id="tab-dec" aria-controls="p-dec" aria-selected="false" tabindex="-1">Braille → Texto</button>
+  </nav>
+
+  <section class="panel" id="p-enc" role="tabpanel" aria-labelledby="tab-enc">
+    <h2>Texto → Braille</h2>
+    <p class="hint">Digite em português. O tradutor segue as regras da Grafia Braille: maiúsculas e caixa alta, números, decimais, ordinais, parênteses simples e compostos.</p>
+    <label for="src">Texto</label>
+    <textarea id="src" placeholder="Ex.: Olá, meu nome é Ana. Tenho 17 anos."></textarea>
+    <div class="row">
+      <button class="act" id="encBtn" type="button">Traduzir</button>
+      <button class="ghost act" id="copyBtn" type="button">Copiar Braille</button>
+      <button class="ghost act" id="printBtn" type="button">Imprimir celas</button>
+      <span class="check"><input type="checkbox" id="showNums" checked> <label for="showNums" style="margin:0;font-weight:400">mostrar os pontos numerados</label></span>
+    </div>
+    <div class="out" id="encOut" aria-live="polite">
+      <div class="cells" id="encCells"></div>
+      <div class="uni" id="encUni"></div>
+      <p class="hint" id="encWarn"></p>
+    </div>
+  </section>
+
+  <section class="panel" id="p-dec" role="tabpanel" aria-labelledby="tab-dec" hidden>
+    <h2>Braille → Texto</h2>
+    <p class="hint">Monte cada cela tocando nos pontos, do jeito que eles aparecem no papel, e adicione uma a uma. Ou cole celas em Braille se já tiver o texto digital.</p>
+    <div class="builder">
+      <div class="keypad" role="group" aria-label="Pontos da cela braille">
+        <button class="dot" type="button" data-d="1" aria-pressed="false" aria-label="ponto 1">1</button>
+        <button class="dot" type="button" data-d="4" aria-pressed="false" aria-label="ponto 4">4</button>
+        <button class="dot" type="button" data-d="2" aria-pressed="false" aria-label="ponto 2">2</button>
+        <button class="dot" type="button" data-d="5" aria-pressed="false" aria-label="ponto 5">5</button>
+        <button class="dot" type="button" data-d="3" aria-pressed="false" aria-label="ponto 3">3</button>
+        <button class="dot" type="button" data-d="6" aria-pressed="false" aria-label="ponto 6">6</button>
+      </div>
+      <div class="row">
+        <button class="act" id="addCell" type="button">Adicionar cela</button>
+        <button class="ghost act" id="addSpace" type="button">Espaço</button>
+        <button class="ghost act" id="delCell" type="button">Apagar última</button>
+        <button class="ghost act" id="clearCells" type="button">Limpar</button>
+      </div>
+      <div class="field">
+        <label for="bsrc">Celas em Braille</label>
+        <textarea id="bsrc" placeholder="⠨⠁⠝⠁"></textarea>
+        <div class="row" style="justify-content:flex-start"><button class="act" id="decBtn" type="button">Ler texto</button></div>
+      </div>
+    </div>
+    <div class="out" aria-live="polite">
+      <div class="cells" id="decCells"></div>
+      <p class="plain" id="decOut"></p>
+      <p class="hint" id="decWarn"></p>
+    </div>
+  </section>
+</div>
+
+<!-- ===== MÉTODO E VALIDAÇÃO ===== -->
+<div id="s-mv" role="tabpanel" aria-labelledby="sec-mv" hidden>
+  <nav class="tabs" role="tablist" aria-label="Método e Validação">
+    <button role="tab" id="tab-tab" aria-controls="p-tab" aria-selected="true">Tabela</button>
+    <button role="tab" id="tab-tst" aria-controls="p-tst" aria-selected="false" tabindex="-1">Testes</button>
+  </nav>
+
+  <section class="panel" id="p-tab" role="tabpanel" aria-labelledby="tab-tab">
+    <h2>Tabela de sinais</h2>
+    <p class="hint">Esta é a tabela que o programa usa, conferida com a <em>Grafia Braille para a Língua Portuguesa</em> (MEC/IBC). A coluna Fonte indica a página do documento.</p>
+    <div class="tablewrap"><table id="refTable">
+      <thead><tr><th>Caractere</th><th>Cela</th><th>Pontos</th><th>Observação</th><th>Fonte</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </section>
+
+  <section class="panel" id="p-tst" role="tabpanel" aria-labelledby="tab-tst" hidden>
+    <h2>Testes de validação</h2>
+    <p class="hint">Os testes usam exemplos copiados do próprio documento oficial, com a página de cada um. O teste de ida e volta traduz o texto para Braille e de volta para texto, e verifica se chega igual.</p>
+    <div class="row"><button class="act" id="runTests" type="button">Rodar testes</button></div>
+    <p class="score" id="score" aria-live="polite"></p>
+    <div class="tablewrap"><table id="testTable">
+      <thead><tr><th>Caso</th><th>Entrada</th><th>Esperado</th><th>Obtido</th><th>Resultado</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </section>
+</div>
+
+<footer>
+  <p>A tela não substitui o papel: o Braille só é lido pelo tato, então use as celas impressas em relevo para o contato real.</p>
+  <p>O tradutor pode errar. Confira textos importantes com a <em>Grafia Braille para a Língua Portuguesa</em> (MEC/IBC) ou com uma pessoa que leia Braille.</p>
+</footer>
+</div>
+
+<script src="braille.js"></script>
+<script src="tests.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
